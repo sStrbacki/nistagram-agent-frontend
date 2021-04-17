@@ -1,15 +1,11 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import registration from './registration/index'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  state: {
-  },
-  mutations: {
-  },
-  actions: {
-  },
   modules: {
+    signup: registration
   }
 })
