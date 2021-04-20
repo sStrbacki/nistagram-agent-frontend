@@ -20,6 +20,18 @@
 
                <password-field></password-field>
 
+                <transition name="fade">
+                    <b-row v-if="dataValid && commonlyUsed"> 
+                        <b-row>
+                            <b-icon icon="exclamation-circle-fill" variant="warning" class="mt-2 ml-3" ></b-icon>
+                            <div class="notif-text ml-2"> Your password matches one of the most common password patterns. </div>
+                        </b-row>
+                        <b-row>
+                            <div class="sub-notif-text">Consider being more creative when composing a password. </div>
+                        </b-row>
+                    </b-row>
+                </transition>
+
                 <b-row cols="1" align-h="center" class="mt-4">
                     <b-button :disabled="!dataValid" @click="register"> Sing up </b-button>
                 </b-row>
@@ -28,13 +40,14 @@
                     Already have an account?
                     <b-link class="ml-1">Sign in</b-link> 
                 </b-row>
-                
+
             </div>
         </b-row>
     </b-container>
 </template>
 
 <script>
+
 import PasswordField from '../components/sign-up/PasswordField'
 
 export default {
@@ -47,6 +60,11 @@ export default {
             },
             set(value){
                 this.$store.commit('updateEmail',value)
+            }
+        },
+        password:{
+            get(){
+                return this.$store.state.signup.signUpData.password
             }
         },
         fullName:{
@@ -64,6 +82,9 @@ export default {
             set(value){
                 this.$store.commit('updateUsername',value)
             }
+        },
+        commonlyUsed: function(){
+            return (/^[A-Z].*[1 !]{1,2}$/).test(this.password)
         },
         emailValid: function(){
             if(this.email === '')
@@ -105,6 +126,18 @@ export default {
     padding: 3em;
     border-radius: 6px;
     box-shadow: 5px 5px 10px #1d1d1d;
+}
+.notif-text {
+    margin-top: 0.3em;
+}
+.sub-notif-text {
+    margin-left: 2.5em;
+}
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 
 </style>
