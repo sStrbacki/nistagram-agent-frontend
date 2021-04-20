@@ -6,10 +6,10 @@
         </b-col>
     </b-row>
     <b-row class="my-1">
-        <b-col>
+        <b-col cols="4">
             Upload image:
         </b-col>
-        <b-col>
+        <b-col cols="8">
             <b-form-input v-model="form.imageUrl" placeholder="Image URL"></b-form-input>
         </b-col>
     </b-row>
@@ -23,11 +23,9 @@
             <b-form-input v-model="form.quantity" placeholder="Quantity"></b-form-input>
         </b-col>
     </b-row>
-    <b-row class="my-1">
-        <b-col>
-            <b-button variant="primary" class="mx-2" @click="save()">Save</b-button>
-            <b-button class="mx-2" @click="cancel()">Cancel</b-button>
-        </b-col>
+    <b-row align-h="end" class="my-1">
+        <b-button variant="primary" class="mx-2" @click="save()">Save</b-button>
+        <b-button class="mr-3" @click="cancel()">Cancel</b-button>
     </b-row>
 </div>
 </template>
@@ -61,10 +59,12 @@ export default {
             else this.update();
         },
         create() {
-            axios.post('http://localhost:8080/api/products', this.form);
+            axios.post('http://localhost:8080/api/products', this.form)
+            .then(() => this.$emit('save', this.form));
         },
         update() {
-            axios.put('http://localhost:8080/api/products/' + this.form.id, this.form);
+            axios.put('http://localhost:8080/api/products/' + this.form.id, this.form)
+            .then(() => this.$emit('save', this.form));
         },
         cancel() {
             this.reset();
