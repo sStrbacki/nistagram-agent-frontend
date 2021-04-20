@@ -1,3 +1,6 @@
+import api from '../../api/index'
+import axios from 'axios'
+
 export default {
     state: {
         signUpData:{
@@ -22,9 +25,8 @@ export default {
         }
     },
     actions: {
-        register(){
-            //TODO : send HTTP Post to the server
-            console.log('REGISTERED')
+        register(context){
+            axios.post(api.users.root, context.state.signUpData)
         }
     }
 }
