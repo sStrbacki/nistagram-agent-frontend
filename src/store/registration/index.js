@@ -1,13 +1,18 @@
 import api from '../../api/index'
 import axios from 'axios'
+import Vue from 'vue'
 
 export default {
     state: {
-        signUpData:{
+        signUpData: {
             email: '',
             fullName: '',
             username: '',
             password: '',
+        },
+        registrationOutcome: {
+            successful: undefined,
+            message: undefined
         }
     },
     mutations: {
@@ -27,6 +32,21 @@ export default {
     actions: {
         register(context){
             axios.post(api.users.root, context.state.signUpData)
+            .then(res => {
+                Vue.notify({
+                    group: 'notification',
+                    text: res.data,
+                    type: 'success'
+                })
+            })
+            .catch( err => {
+                console.log(err.response.data)
+                Vue.notify({
+                    group: 'notification',
+                    text: err.response.data,
+                    type: 'error'
+                })
+            } )
         }
     }
 }

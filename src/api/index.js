@@ -4,7 +4,6 @@ const api = {
     users: {
         root: baseUrl + "/users/"
     }
-
 }
 
 export default api
