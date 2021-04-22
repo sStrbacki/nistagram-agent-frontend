@@ -16,7 +16,7 @@
         </b-row>
 
         <b-row cols="1" align-h="center" class="mt-4">
-          <b-button @click="login"> Login </b-button>
+          <b-button @click="login" :disabled="!checkCredentials"> Login </b-button>
         </b-row>
 
       </div>
@@ -44,6 +44,9 @@ export default {
                 this.$store.commit("updatePassword", value);
             }
         },
+        checkCredentials() {
+            return this.username && this.password;
+        }
     },
     methods: {
         login() {
