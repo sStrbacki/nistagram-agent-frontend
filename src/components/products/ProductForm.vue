@@ -6,14 +6,6 @@
         </b-col>
     </b-row>
     <b-row class="my-1">
-        <b-col cols="4">
-            Upload image:
-        </b-col>
-        <b-col cols="8">
-            <b-form-input v-model="form.imageUrl" placeholder="Image URL"></b-form-input>
-        </b-col>
-    </b-row>
-    <b-row class="my-1">
         <b-col>
             <b-form-input :state="priceValid" v-model="form.price" placeholder="Price"></b-form-input>
         </b-col>
@@ -23,7 +15,17 @@
             <b-form-input :state="quantityValid" v-model="form.quantity" placeholder="Quantity"></b-form-input>
         </b-col>
     </b-row>
-    <b-row align-h="end" class="my-1">
+    <b-row class="my-1">
+        <b-col cols="4">
+            Upload image:
+        </b-col>
+        <b-col cols="8">
+            <input type="file" ref="image" accept="image/*" @change="uploadImage"/>
+        </b-col>
+        
+    </b-row>
+    <b-row align-h="end" align-v="center" class="my-1">
+        <b-spinner v-show="uploading"></b-spinner>
         <b-button v-bind:disabled="!formValid" variant="primary" class="mx-2" @click="save()">Save</b-button>
         <b-button class="mr-3" @click="cancel()">Cancel</b-button>
     </b-row>
@@ -32,6 +34,7 @@
 
 <script>
 import axios from 'axios'
+import api from '../../api/index.js'
 
 export default {
     name: 'ProductForm',
@@ -51,7 +54,7 @@ export default {
                 price: this.price,
                 quantity: this.quantity
             },
-            errors: {}
+            uploading: false
         }
     },
     methods: {
@@ -60,11 +63,11 @@ export default {
             else this.update();
         },
         create() {
-            axios.post('http://localhost:8080/api/products', this.form)
+            axios.post(api.products.root, this.form)
             .then(() => this.$emit('save', this.form));
         },
         update() {
-            axios.put('http://localhost:8080/api/products/' + this.form.id, this.form)
+            axios.put(api.products.root + this.form.id, this.form)
             .then(() => this.$emit('save', this.form));
         },
         cancel() {
@@ -79,6 +82,32 @@ export default {
                 price: this.price,
                 quantity: this.quantity
             }
+        },
+        uploadImage() {
+            this.uploading = true;
+            const image = this.$refs.image.files[0];
+            const formData = new FormData();
+            formData.append('image', image);
+            axios.post(
+                api.images.root,
+                formData,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                })
+                .then(response => {
+                    this.form.imageUrl = api.images.content + response.data;
+                    console.log(response.data);
+                })
+                .catch(() => {
+                    this.$notify({
+                        group: 'notification',
+                        text: 'Error uploading image!',
+                        type: 'error'
+                    });
+                })
+                .finally(() => this.uploading = false);
         }
     },
     computed: {
@@ -98,7 +127,7 @@ export default {
             return Number.isInteger(+this.form.quantity) && this.form.quantity >= 0;
         },
         formValid: function () {
-            return this.nameValid && this.priceValid && this.quantityValid
+            return this.nameValid && this.priceValid && this.quantityValid && !this.uploading
         }
     }
 }
