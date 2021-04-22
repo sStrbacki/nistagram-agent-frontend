@@ -1,5 +1,6 @@
 import axios from "axios";
-import {setJwt} from "@/helpers/jwt"
+import {setJwt} from "@/helpers/jwt";
+import Vue from "vue";
 
 export default {
     state: {
@@ -28,9 +29,14 @@ export default {
             .then(response => {
                 let jwt = response.headers.authorization;
                 setJwt(jwt)
-                console.log(jwt);
             })
-            .catch(err => console.error(err));
+            .catch(err => {
+                Vue.notify({
+                    group: 'notification',
+                    text: err.response.data,
+                    type: 'error'
+                })
+            });
         }
     }
 }

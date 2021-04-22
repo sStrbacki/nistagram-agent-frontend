@@ -9,7 +9,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import interceptorsSetup from "@/helpers/interceptors";
 import Notifications from 'vue-notification'
 
-interceptorsStup()
+interceptorsSetup()
 
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
