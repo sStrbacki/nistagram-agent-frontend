@@ -46,8 +46,9 @@
 </template>
 
 <script>
-import ProductForm from '../components/products/ProductForm.vue'
-import axios from 'axios'
+import ProductForm from '../components/products/ProductForm.vue';
+import axios from 'axios';
+import api from '../api/index.js';
 
 export default {
     components: { ProductForm },
@@ -58,7 +59,7 @@ export default {
         }
     },
     mounted() {
-        axios.get('http://localhost:8080/api/products')
+        axios.get(api.products.root)
         .then(response => this.products = response.data);
     },
     methods: {
@@ -68,7 +69,7 @@ export default {
             this.editId = 0;
         },
         remove(id) {
-            axios.delete('http://localhost:8080/api/products/' + id)
+            axios.delete(api.products.root + id)
             .then(() => {
                 const index = this.products.findIndex(p => p.id === id);
                 this.products.splice(index, 1);

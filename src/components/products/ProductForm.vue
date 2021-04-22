@@ -34,6 +34,7 @@
 
 <script>
 import axios from 'axios'
+import api from '../../api/index.js'
 
 export default {
     name: 'ProductForm',
@@ -62,11 +63,11 @@ export default {
             else this.update();
         },
         create() {
-            axios.post('http://localhost:8080/api/products', this.form)
+            axios.post(api.products.root, this.form)
             .then(() => this.$emit('save', this.form));
         },
         update() {
-            axios.put('http://localhost:8080/api/products/' + this.form.id, this.form)
+            axios.put(api.products.root + this.form.id, this.form)
             .then(() => this.$emit('save', this.form));
         },
         cancel() {
@@ -87,12 +88,17 @@ export default {
             const image = this.$refs.image.files[0];
             const formData = new FormData();
             formData.append('image', image);
-            axios.post('http://localhost:4000/api/images',
+            axios.post(
+                api.images.root,
                 formData,
                 {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
+                })
+                .then(response => {
+                    this.form.imageUrl = api.images.content + response.data;
+                    console.log(response.data);
                 })
                 .catch(() => {
                     this.$notify({
