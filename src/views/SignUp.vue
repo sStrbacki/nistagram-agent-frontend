@@ -38,7 +38,7 @@
 
                 <b-row align-h="end">
                     Already have an account?
-                    <b-link class="ml-1">Sign in</b-link> 
+                    <b-link class="ml-1" to="/login">Sign in</b-link>
                 </b-row>
 
             </div>
