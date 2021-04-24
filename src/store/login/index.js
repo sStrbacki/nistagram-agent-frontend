@@ -20,7 +20,7 @@ export default {
     actions: {
         login(context){
             axios.post(
-                "http://localhost:4000/api/auth/login",
+                "https://localhost:4000/api/auth/login",
                 {
                     "username": context.state.loginData.username,
                     "password": context.state.loginData.password
