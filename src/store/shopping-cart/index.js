@@ -13,13 +13,13 @@ export default {
     },
     actions: {
        fetchShoppingCart(context) {
-           axios.get(api.shoppingCart.root + '/user/Pantelic')
+           axios.get(api.shoppingCart.root + 'user/johndoe')
            .then((response) => {
                 context.commit('setItems', response.data);
            })
        },
        placeOrder(context) {
-            axios.post(api.shoppingCart.root + '/user/Pantelic', context.state.items)
+            axios.post(api.shoppingCart.root + 'user/johndoe', context.state.items)
             .then(response => {
                 Vue.notify({
                     group: 'notification',
@@ -35,6 +35,19 @@ export default {
                     type: 'error'
                 });
             });
-       }
+       },
+       removeFromShoppingCart(context, shoppingCartItemId) {
+        axios.delete(api.shoppingCart.root + shoppingCartItemId)
+        .then(() => {
+             Vue.notify({
+                 group: 'notification',
+                 text: "Product successfully removed from your shopping cart!",
+                 type: 'success'
+             });
+             context.state.items = context.state.items.filter(item => {
+                 item.id !== shoppingCartItemId
+             })
+        });
+    }
     }
 }

@@ -4,7 +4,7 @@
 			<b-col cols="4" v-for="item in items" :key="item.id">
 				<div class="item mb-5 mr-4">
                     <b-col>
-                        <catalog-item :item="item.product" :preview="true"/>
+                        <catalog-item :item="item.product" :cartItem="toCartItem(item)"/>
                     </b-col>
                 </div>
 			</b-col>
@@ -32,6 +32,12 @@ export default {
     methods: {
         placeOrder() {
             this.$store.dispatch('placeOrder');
+        },
+        toCartItem(item) {
+            return {
+                id: item.id,
+                quantity: item.quantity
+            }
         }
     }
 }

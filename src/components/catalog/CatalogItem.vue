@@ -15,21 +15,25 @@
 				<b-row align-h="center" class="mt-4" cols="6" align-v="center">
 					Qty:
 					<b-col class="p-0">
-						<div v-if="!preview" class="btn-quantity-control" @click="decrease">
+						<div v-if="!cartItem" class="btn-quantity-control" @click="decrease">
 							<b-icon icon="dash"></b-icon>
 						</div>
 					</b-col>
 					<b-col>
-						<div class="quantity">{{ this.quantity }}</div>
+						<div v-if="!cartItem" class="quantity">{{ quantity }}</div>
+						<div v-else class="quantity">{{ cartItem.quantity }}</div>
 					</b-col>
 					<b-col class="p-0">
-						<div v-if="!preview" class="btn-quantity-control" @click="increase">
+						<div v-if="!cartItem" class="btn-quantity-control" @click="increase">
 							<b-icon icon="plus"></b-icon>
 						</div>
 					</b-col>
 					<b-col>
-						<b-button v-if="!preview" size="sm" @click="addToShoppingCart">
+						<b-button v-if="!cartItem" size="sm" @click="addToShoppingCart">
 							<b-icon icon="cart-plus"></b-icon>
+						</b-button>
+						<b-button variant="danger" v-else size="sm" @click="removeFromShoppingCart">
+							<b-icon icon="trash"></b-icon>
 						</b-button>
 					</b-col>
 				</b-row>
@@ -42,7 +46,7 @@ export default {
     name: 'CatalogItem',
     props: {
 		item: Object,
-		preview: Boolean
+		cartItem: Object
     },
 	data() {
 		return {
@@ -64,6 +68,9 @@ export default {
 			}
 			this.$store.dispatch('addToShoppingCart',item)
 			this.quantity = 0
+		},
+		removeFromShoppingCart() {
+			this.$store.dispatch('removeFromShoppingCart', this.cartItem.id);
 		}
 	}
 }

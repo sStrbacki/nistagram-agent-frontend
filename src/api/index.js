@@ -13,7 +13,7 @@ const api = {
         root: baseUrl + 'api/images/'
     },
     shoppingCart: {
-        root: baseUrl + 'api/shopping-cart'
+        root: baseUrl + 'api/shopping-cart/'
     }
 }
 
