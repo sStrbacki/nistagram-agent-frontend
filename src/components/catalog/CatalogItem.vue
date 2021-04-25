@@ -13,8 +13,9 @@
 					{{item.price + "$"}}
 				</b-row>
 				<b-row align-h="center" class="mt-4" cols="6" align-v="center">
+					Qty:
 					<b-col class="p-0">
-						<div class="btn-quantity-control" @click="decrease">
+						<div v-if="!preview" class="btn-quantity-control" @click="decrease">
 							<b-icon icon="dash"></b-icon>
 						</div>
 					</b-col>
@@ -22,12 +23,12 @@
 						<div class="quantity">{{ this.quantity }}</div>
 					</b-col>
 					<b-col class="p-0">
-						<div class="btn-quantity-control" @click="increase">
+						<div v-if="!preview" class="btn-quantity-control" @click="increase">
 							<b-icon icon="plus"></b-icon>
 						</div>
 					</b-col>
 					<b-col>
-						<b-button size="sm" @click="addToShoppingCart">
+						<b-button v-if="!preview" size="sm" @click="addToShoppingCart">
 							<b-icon icon="cart-plus"></b-icon>
 						</b-button>
 					</b-col>
@@ -40,7 +41,8 @@
 export default {
     name: 'CatalogItem',
     props: {
-		item: Object
+		item: Object,
+		preview: Boolean
     },
 	data() {
 		return {

@@ -13,13 +13,13 @@ export default {
     },
     actions: {
        fetchShoppingCart(context) {
-           axios.get(api.shoppingCart.root + '/user/johndoe')
+           axios.get(api.shoppingCart.root + '/user/Pantelic')
            .then((response) => {
                 context.commit('setItems', response.data);
            })
        },
        placeOrder(context) {
-            axios.post(api.shoppingCart.root + '/user/johndoe', context.state.items)
+            axios.post(api.shoppingCart.root + '/user/Pantelic', context.state.items)
             .then(response => {
                 Vue.notify({
                     group: 'notification',
