@@ -19,13 +19,16 @@ export default {
     },
     actions: {
         login(context){
-            axios.post(
-                "http://localhost:4000/api/auth/login",
-                {
+            let axiosConfig = {
+                url: "https://localhost:4000/api/auth/login",
+                data: {
                     "username": context.state.loginData.username,
                     "password": context.state.loginData.password
-                }
-            )
+                },
+                method: "POST"
+            };
+
+            axios.request(axiosConfig)
             .then(response => {
                 let jwt = response.headers.authorization;
                 setJwt(jwt)

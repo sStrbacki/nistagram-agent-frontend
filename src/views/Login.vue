@@ -19,6 +19,10 @@
           <b-button @click="login" :disabled="!checkCredentials"> Login </b-button>
         </b-row>
 
+        <b-row align-h="end" class="mt-3">
+          <b-link to="/forgot-password">Forgot password?</b-link>
+        </b-row>
+
       </div>
     </b-row>
   </b-container>
