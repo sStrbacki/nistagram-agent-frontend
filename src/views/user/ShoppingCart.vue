@@ -9,7 +9,28 @@
                 </div>
 			</b-col>
 		</div>
-        <b-button variant="success" @click="placeOrder">Confirm Order</b-button>
+        <b-button v-if="!showShipping" variant="success" @click="showShipping = true">Checkout</b-button>
+        <div v-else>
+            <b-row class="mb-3" cols="3" align-h="center">
+                <b-col>
+                    <b-form-input v-model="address" placeholder="Address"></b-form-input>
+                </b-col>
+            </b-row>
+            <b-row class="mb-3" cols="3" align-h="center">
+                <b-col>
+                    <b-form-input v-model="city" placeholder="City"></b-form-input>
+                </b-col>
+            </b-row>
+            <b-row class="mb-3" cols="6" align-h="center">
+                <b-col>
+                    <b-form-input v-model="state" placeholder="State"></b-form-input>
+                </b-col>
+                <b-col>
+                    <b-form-input v-model="zipCode" placeholder="Zip Code"></b-form-input>
+                </b-col>
+            </b-row>
+            <b-button variant="success" @click="placeOrder">Confirm Order</b-button>
+        </div>
     </div>
 </template>
 
@@ -24,7 +45,44 @@ export default {
             get() {
                 return this.$store.state.shoppingCart.items;
             }
+        },
+        address: {
+            get() {
+                return this.$store.state.shoppingCart.shippingAddress.address;
+            },
+            set(value) {
+                this.$store.commit('updateAddress', value);
+            }
+        },
+        city: {
+            get() {
+                return this.$store.state.shoppingCart.shippingAddress.city;
+            },
+            set(value) {
+                this.$store.commit('updateCity', value);
+            }
+        },
+        state: {
+            get() {
+                return this.$store.state.shoppingCart.shippingAddress.state;
+            },
+            set(value) {
+                this.$store.commit('updateState', value);
+            }
+        },
+        zipCode: {
+            get() {
+                return this.$store.state.shoppingCart.shippingAddress.zipCode;
+            },
+            set(value) {
+                this.$store.commit('updateZipCode', value);
+            }
         }
+    },
+    data() {
+        return {
+            showShipping: false
+        };
     },
     mounted() {
         this.$store.dispatch('fetchShoppingCart');
@@ -32,6 +90,7 @@ export default {
     methods: {
         placeOrder() {
             this.$store.dispatch('placeOrder');
+            this.showShipping = false;
         },
         toCartItem(item) {
             return {
