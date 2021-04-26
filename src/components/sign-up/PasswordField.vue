@@ -54,12 +54,26 @@
                 </transition>
             </div>
         </transition>
+        <transition name="fade">
+            <b-row v-if="secure && commonlyUsed && passwordsMatch"> 
+                <b-row>
+                    <b-icon icon="exclamation-circle-fill" variant="warning" class="mt-2 ml-3" ></b-icon>
+                    <div class="notif-text ml-2"> Your password matches one of the most common password patterns. </div>
+                </b-row>
+                <b-row>
+                    <div class="sub-notif-text">Consider being more creative when composing a password. </div>
+                </b-row>
+            </b-row>
+        </transition>
     </div>
 </template>
 
 <script>
 export default {
     name: 'PasswordField',
+    props: {
+        type: String
+    },
     data: function(){
         return {
             password:'',
@@ -75,8 +89,11 @@ export default {
         }
     },
     computed:{
+        commonlyUsed: function(){
+            return (/^[A-Z].*[1 !]{1,2}$/).test(this.password)
+        },
         secure: function(){
-            if ( this.password === "" )
+            if (this.password === "" )
                 return null
             return !this.tooShort && this.containsUpperLetter && this.containsLowerLetter &&
             this.containsSpecCharacter && this.containsDigit
@@ -101,11 +118,23 @@ export default {
         }
     },
     methods:{
-        updatePassword(){
+        updateSignupPassword(){
             if(this.secure && this.passwordsMatch)
                 this.$store.commit('updatePassword', this.password)
             else
                 this.$store.commit('updatePassword', '')
+        },
+        updatePasswordReset(){
+            if(this.secure && this.passwordsMatch)
+                this.$store.commit('updatePasswordReset', this.password)
+            else
+                this.$store.commit('updatePasswordReset', '')
+        },
+        updatePassword(){
+            if(this.type === "signup")
+                this.updateSignupPassword()
+            else if (this.type === "password-reset")
+                this.updatePasswordReset()
         }
     }
 }
@@ -120,5 +149,11 @@ export default {
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
+}
+.notif-text {
+    margin-top: 0.3em;
+}
+.sub-notif-text {
+    margin-left: 2.5em;
 }
 </style>

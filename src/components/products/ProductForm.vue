@@ -98,7 +98,6 @@ export default {
                 })
                 .then(response => {
                     this.form.imageUrl = api.images.content + response.data;
-                    console.log(response.data);
                 })
                 .catch(() => {
                     this.$notify({

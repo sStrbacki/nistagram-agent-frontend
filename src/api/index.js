@@ -3,8 +3,12 @@ const baseUrl = 'https://localhost:4000/'
 const api = {
     users: {
         root: baseUrl + 'api/user/',
-        requestPasswordReset: baseUrl + 'api/users/' + 'request-password-reset/',
-        passwordReset: baseUrl + 'api/users/' + 'password-reset/'
+        requestPasswordReset: baseUrl + 'api/user/' + 'request-password-reset/',
+        passwordReset: baseUrl + 'api/user/' + 'password-reset/'
+    },
+    auth: {
+        root: baseUrl + 'api/auth/',
+        login: baseUrl + 'api/auth/login'
     },
     products: {
         root: baseUrl + 'api/product/',

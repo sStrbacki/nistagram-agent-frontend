@@ -29,7 +29,7 @@
 						</div>
 					</b-col>
 					<b-col>
-						<b-button v-if="!cartItem" size="sm" @click="addToShoppingCart">
+						<b-button v-if="!cartItem" size="sm" @click="addToShoppingCart" :disabled="!quantity">
 							<b-icon icon="cart-plus"></b-icon>
 						</b-button>
 						<b-button variant="danger" v-else size="sm" @click="removeFromShoppingCart">

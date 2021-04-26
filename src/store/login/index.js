@@ -1,5 +1,6 @@
 import axios from "axios";
-import {setJwt} from "@/helpers/jwt";
+import { setJwt } from "../../helpers/jwt"
+import api from '../../api/index'
 import Vue from "vue";
 
 export default {
@@ -19,19 +20,9 @@ export default {
     },
     actions: {
         login(context){
-            let axiosConfig = {
-                url: "https://localhost:4000/api/auth/login",
-                data: {
-                    "username": context.state.loginData.username,
-                    "password": context.state.loginData.password
-                },
-                method: "POST"
-            };
-
-            axios.request(axiosConfig)
+            axios.post(api.auth.login, context.state.loginData)
             .then(response => {
-                let jwt = response.headers.authorization;
-                setJwt(jwt)
+                setJwt(response.headers.authorization)
             })
             .catch(err => {
                 Vue.notify({

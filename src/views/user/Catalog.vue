@@ -1,6 +1,5 @@
 <template>
 	<div>
-		<router-link to="/shopping-cart">Shopping Cart</router-link>
 		<div class="d-flex flex-wrap justify-content-between items-wrap">
 			<b-col cols="4" v-for="product in products" :key="product.id">
 				<catalog-item :item="product"/>
@@ -10,7 +9,7 @@
 </template>
 
 <script>
-import CatalogItem from '../components/catalog/CatalogItem'
+import CatalogItem from '../../components/catalog/CatalogItem'
 
 export default {
     name: 'Catalog',
@@ -24,13 +23,13 @@ export default {
     mounted() {
 		this.$store.dispatch('fetchAvailable')
     },
-	components: { CatalogItem}
+	components: { CatalogItem }
 }
 </script>
 
 <style scoped>
 .items-wrap {
-	margin-top: 8em;
+	margin-top: 4em;
 }
 
 </style>

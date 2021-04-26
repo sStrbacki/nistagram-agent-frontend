@@ -46,9 +46,9 @@
 </template>
 
 <script>
-import ProductForm from '../components/products/ProductForm.vue';
+import ProductForm from '../../components/products/ProductForm';
 import axios from 'axios';
-import api from '../api/index.js';
+import api from '../../api/index.js';
 
 export default {
     components: { ProductForm },

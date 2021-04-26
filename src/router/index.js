@@ -6,39 +6,57 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'SignUp',
-    component: () => import('../views/SignUp.vue')
+    component: () => import('../views/guest/GuestPage.vue'),
+    children: [
+		{
+			path: '/',
+			name: 'Login',
+			component: () => import('../views/guest/Login.vue')
+		},
+		{
+			path: '/sign-up',
+			name: 'SignUp',
+			component: () => import('../views/guest/SignUp.vue')
+		},
+		{
+			path: '/forgot-password',
+			name: 'ForgotPassword',
+			component: () => import('../views/guest/ForgotPassword')
+		},
+		{
+			path: '/password-reset/:uuid&:ruuid',
+			name: 'PasswordReset',
+			props: true,
+			component: () => import('../views/guest/PasswordReset')
+		},
+    ]
   },
   {
-    path: '/products',
-    name: 'Products',
-    component: () => import('../views/Products.vue')
+    path: '/user',
+    component: () => import('../views/user/UserPage.vue'),
+    children: [
+		{
+			path: '/',
+			name: 'Catalog',
+			component: () => import('../views/user/Catalog.vue')
+		},
+		{
+			path: 'shopping-cart',
+			name: 'ShoppingCart',
+			component: () => import('../views/user/ShoppingCart.vue')
+		}
+    ]
   },
   {
-    path: '/catalog',
-    name: 'Catalog',
-    component: () => import('../views/Catalog.vue')
-  },
-  {
-    path: '/login',
-    name: 'Login',
-    component: () => import('../views/Login')
-  },
-  {
-    path: '/forgot-password',
-    name: 'ForgotPassword',
-    component: () => import('../views/ForgotPassword')
-  },
-  {
-    path: '/password-reset/:uuid&:ruuid',
-    name: 'PasswordReset',
-    props: true,
-    component: () => import('../views/PasswordReset')
-  },
-  {
-    path: '/shopping-cart',
-    name: 'ShoppingCart',
-    component: () => import('../views/ShoppingCart.vue')
+	path:'/agent',
+	component: () => import('../views/agent/AgentPage.vue'),
+	children: [
+		{
+			path: '/',
+			name: 'Products',
+			component: () => import('../views/agent/Products.vue')
+		},
+	]
   }
 ]
 

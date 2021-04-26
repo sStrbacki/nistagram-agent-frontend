@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="d-flex flex-wrap justify-content-between items-wrap mt-5">
+        <div class="d-flex flex-wrap justify-content-between items-wrap">
 			<b-col cols="4" v-for="item in items" :key="item.id">
 				<div class="item mb-5 mr-4">
                     <b-col>
@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import CatalogItem from '../components/catalog/CatalogItem.vue'
+import CatalogItem from '../../components/catalog/CatalogItem'
 
 export default {
     name: 'ShoppingCart',
@@ -49,5 +49,8 @@ export default {
     border-radius: 0.5em;
 	margin-left: 2em;
     color: rgb(36, 35, 35);
+}
+.items-wrap {
+	margin-top: 4em;
 }
 </style>
