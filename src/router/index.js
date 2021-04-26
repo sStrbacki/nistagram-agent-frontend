@@ -15,6 +15,11 @@ const routes = [
     component: () => import('../views/Products.vue')
   },
   {
+    path: '/catalog',
+    name: 'Catalog',
+    component: () => import('../views/Catalog.vue')
+  },
+  {
     path: '/login',
     name: 'Login',
     component: () => import('../views/Login')
@@ -29,6 +34,11 @@ const routes = [
     name: 'PasswordReset',
     props: true,
     component: () => import('../views/PasswordReset')
+  },
+  {
+    path: '/shopping-cart',
+    name: 'ShoppingCart',
+    component: () => import('../views/ShoppingCart.vue')
   }
 ]
 
