@@ -23,8 +23,13 @@ const routes = [
     path: '/forgot-password',
     name: 'ForgotPassword',
     component: () => import('../views/ForgotPassword')
+  },
+  {
+    path: '/password-reset/:uuid&:ruuid',
+    name: 'PasswordReset',
+    props: true,
+    component: () => import('../views/PasswordReset')
   }
-
 ]
 
 const router = new VueRouter({
