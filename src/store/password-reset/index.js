@@ -18,9 +18,9 @@ export default {
     actions: {
         changePassword(context){
             axios.post(
-                api.users.resetPassword + context.state.uuid + '&' + context.state.rUuid,
+                api.users.passwordReset + context.state.uuid + '&' + context.state.rUuid,
                 {
-                        newPassword: "Nikola021!+"
+                        newPassword: context.rootState.signup.signUpData.password
                      }
             )
             .then(() => {
@@ -30,7 +30,13 @@ export default {
                     type: 'success'
                 })
             })
-            .catch(err => alert(err.response.data))
+            .catch(err => {
+                Vue.notify({
+                    group: 'notification',
+                    text: err.response.data,
+                    type: 'error'
+                })
+            })
         }
     }
 }
