@@ -90,6 +90,7 @@ export default {
     methods: {
         placeOrder() {
             this.$store.dispatch('placeOrder');
+            this.showShipping = false;
         },
         toCartItem(item) {
             return {

@@ -30,6 +30,15 @@ export default {
         },
         updateZipCode(state, value) {
             state.shippingAddress.zipCode = value;
+        },
+        resetShippingAddress(state) {
+            state.shippingAddress.address = '';
+            state.shippingAddress.city = '';
+            state.shippingAddress.state = '';
+            state.shippingAddress.zipCode = '';
+        },
+        resetItems(state) {
+            state.items = [];
         }
     },
     actions: {
@@ -52,6 +61,8 @@ export default {
                     text: response.data,
                     type: 'success'
                 });
+                context.commit('resetItems');
+                context.commit('resetShippingAddress');
             })
             .catch(error => {
                 console.log(error.response.data);
