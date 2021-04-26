@@ -18,19 +18,7 @@
                     <b-form-input placeholder="Username" :state="usernameValid" v-model="username"></b-form-input>
                 </b-row>
 
-               <password-field></password-field>
-
-                <transition name="fade">
-                    <b-row v-if="dataValid && commonlyUsed"> 
-                        <b-row>
-                            <b-icon icon="exclamation-circle-fill" variant="warning" class="mt-2 ml-3" ></b-icon>
-                            <div class="notif-text ml-2"> Your password matches one of the most common password patterns. </div>
-                        </b-row>
-                        <b-row>
-                            <div class="sub-notif-text">Consider being more creative when composing a password. </div>
-                        </b-row>
-                    </b-row>
-                </transition>
+               <password-field type="signup"></password-field>
 
                 <b-row cols="1" align-h="center" class="mt-4">
                     <b-button :disabled="!dataValid" @click="register"> Sing up </b-button>
@@ -38,7 +26,7 @@
 
                 <b-row align-h="end">
                     Already have an account?
-                    <b-link class="ml-1" to="/login">Sign in</b-link>
+                    <b-link class="ml-1" :to="{ name: 'Login' }">Sign in</b-link>
                 </b-row>
 
             </div>
@@ -48,13 +36,13 @@
 
 <script>
 
-import PasswordField from '../components/sign-up/PasswordField'
+import PasswordField from '../../components/sign-up/PasswordField'
 
 export default {
     name : 'SignUp',
     components:{ PasswordField },
-    computed:{
-        email:{
+    computed: {
+        email: {
             get(){
                 return this.$store.state.signup.signUpData.email
             },
@@ -62,7 +50,7 @@ export default {
                 this.$store.commit('updateEmail',value)
             }
         },
-        password:{
+        password: {
             get(){
                 return this.$store.state.signup.signUpData.password
             }
@@ -82,9 +70,6 @@ export default {
             set(value){
                 this.$store.commit('updateUsername',value)
             }
-        },
-        commonlyUsed: function(){
-            return (/^[A-Z].*[1 !]{1,2}$/).test(this.password)
         },
         emailValid: function(){
             if(this.email === '')
