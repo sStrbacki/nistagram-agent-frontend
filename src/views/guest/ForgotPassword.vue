@@ -4,15 +4,15 @@
 
       <div class="reg-form" >
         <b-row align-h="center" class="mb-4">
-          <h1>Reset your password</h1>
+          <h1>Request a password reset</h1>
         </b-row>
 
         <b-row cols="1" align-h="center">
-          <PasswordField></PasswordField>
+          <b-form-input placeholder="Username" v-model="username"></b-form-input>
         </b-row>
 
-        <b-row align-h="center" class="mt-5">
-          <b-button variant="success" @click="changePassword()"> Change password</b-button>
+        <b-row cols="1" align-h="center" class="mt-4">
+          <b-button @click="sendRequest()" :disabled="!checkCredentials"> Send request </b-button>
         </b-row>
 
       </div>
@@ -21,22 +21,25 @@
 </template>
 
 <script>
-import PasswordField from "@/components/sign-up/PasswordField";
 export default {
-  name: "PasswordReset",
-  components: {PasswordField},
-  props: {
-      uuid: String,
-      ruuid: String
-  },
-  methods: {
-    changePassword() {
-      this.$store.dispatch('changePassword');
+  name: "ForgotPassword",
+  computed: {
+    username: {
+      get() {
+        return this.$store.state.passwordReset.username
+      },
+      set(value) {
+        this.$store.commit("setUsername", value);
+      }
+    },
+    checkCredentials() {
+      return this.username;
     }
   },
-  mounted() {
-      this.$store.commit('setUUID', this.uuid);
-      this.$store.commit('setRUUID', this.ruuid);
+  methods: {
+    sendRequest() {
+      this.$store.dispatch('requestPasswordChange')
+    }
   }
 }
 </script>

@@ -14,7 +14,7 @@
             <b-col cols="4" v-for="product in products" :key="product.id">
                 <div v-if="product.id !== editId" class="product m-1 py-1">
                     <b-row align-h="center">
-                        <img v-bind:src="product.imageUrl">
+                        <img v-bind:src="product.imageUrl" class="product-image">
                     </b-row>
                     <b-row align-h="center">
                         {{product.name}}
@@ -46,9 +46,9 @@
 </template>
 
 <script>
-import ProductForm from '../components/products/ProductForm.vue';
+import ProductForm from '../../components/products/ProductForm';
 import axios from 'axios';
-import api from '../api/index.js';
+import api from '../../api/index.js';
 
 export default {
     components: { ProductForm },
@@ -93,6 +93,14 @@ export default {
     background-color: rgb(224, 220, 220);
     border-radius: 6px;
     color: rgb(36, 35, 35);
+}
+.product-image {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 200px;
+    height: 200px;
+    border-radius: 90%;
+    object-fit: cover; 
 }
 
 img {

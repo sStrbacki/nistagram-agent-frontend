@@ -32,4 +32,11 @@ body{
   font-size: 20px !important;
 }
 
+.user-navbar {
+    background-color: rgba(167, 170, 167, 0.377) !important;
+}
+.nav-link{
+    color: rgba(255, 255, 255)
+}
+
 </style>

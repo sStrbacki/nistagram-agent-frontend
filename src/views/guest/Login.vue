@@ -20,7 +20,10 @@
         </b-row>
 
         <b-row align-h="end" class="mt-3">
-          <b-link to="/forgot-password">Forgot password?</b-link>
+          <b-link :to="{ name: 'ForgotPassword' }">Forgot password?</b-link>
+        </b-row>
+        <b-row align-h="end" class="mt-3">
+          <b-link :to="{ name: 'SignUp'}"> Create an account </b-link>
         </b-row>
 
       </div>
@@ -61,24 +64,24 @@ export default {
 </script>
 
 <style scoped>
-    .reg-form{
-      margin-top: 5em;
-      color: rgb(36, 35, 35);
-      background-color: rgb(224, 220, 220);
-      padding: 3em;
-      border-radius: 6px;
-      box-shadow: 5px 5px 10px #1d1d1d;
-    }
-    .notif-text {
-      margin-top: 0.3em;
-    }
-    .sub-notif-text {
-      margin-left: 2.5em;
-    }
-    .fade-enter-active, .fade-leave-active {
-      transition: opacity .5s;
-    }
-    .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-      opacity: 0;
-  }
+.reg-form{
+  margin-top: 5em;
+  color: rgb(36, 35, 35);
+  background-color: rgb(224, 220, 220);
+  padding: 3em;
+  border-radius: 6px;
+  box-shadow: 5px 5px 10px #1d1d1d;
+}
+.notif-text {
+  margin-top: 0.3em;
+}
+.sub-notif-text {
+  margin-left: 2.5em;
+}
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
 </style>

@@ -1,6 +1,8 @@
 import api from '../../api/index'
 import axios from 'axios'
 import Vue from 'vue'
+import router from '../../router/index'
+
 
 export default {
     state: {
@@ -38,6 +40,7 @@ export default {
                     text: res.data,
                     type: 'success'
                 })
+                router.push('/')
             })
             .catch( err => {
                 console.log(err.response.data)
