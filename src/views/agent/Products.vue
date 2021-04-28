@@ -6,7 +6,7 @@
                     <h1>Add product</h1>
                 </b-row>
                 <b-row align-h="center">
-                    <product-form></product-form>
+                    <product-form @save="addProduct"></product-form>
                 </b-row>
             </div>
         </b-row>
@@ -67,6 +67,9 @@ export default {
             const index = this.products.findIndex(p => p.id === form.id);
             this.products[index] = form;
             this.editId = 0;
+        },
+        addProduct(product) {
+            this.products.push(product);
         },
         remove(id) {
             axios.delete(api.products.root + id)
