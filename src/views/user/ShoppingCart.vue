@@ -13,23 +13,23 @@
         <div v-else>
             <b-row class="mb-3" cols="3" align-h="center">
                 <b-col>
-                    <b-form-input v-model="address" placeholder="Address"></b-form-input>
+                    <b-form-input :state="addressValid" v-model="address" placeholder="Address"></b-form-input>
                 </b-col>
             </b-row>
             <b-row class="mb-3" cols="3" align-h="center">
                 <b-col>
-                    <b-form-input v-model="city" placeholder="City"></b-form-input>
+                    <b-form-input :state="cityValid" v-model="city" placeholder="City"></b-form-input>
                 </b-col>
             </b-row>
             <b-row class="mb-3" cols="6" align-h="center">
                 <b-col>
-                    <b-form-input v-model="state" placeholder="State"></b-form-input>
+                    <b-form-input :state="stateValid" v-model="state" placeholder="State"></b-form-input>
                 </b-col>
                 <b-col>
-                    <b-form-input v-model="zipCode" placeholder="Zip Code"></b-form-input>
+                    <b-form-input :state="zipCodeValid" v-model="zipCode" placeholder="Zip Code"></b-form-input>
                 </b-col>
             </b-row>
-            <b-button variant="success" @click="placeOrder">Confirm Order</b-button>
+            <b-button :disabled="!formValid" variant="success" @click="placeOrder">Confirm Order</b-button>
         </div>
     </div>
 </template>
@@ -77,6 +77,21 @@ export default {
             set(value) {
                 this.$store.commit('updateZipCode', value);
             }
+        },
+        addressValid() {
+            return this.notEmpty(this.address);
+        },
+        cityValid() {
+            return this.notEmpty(this.city);
+        },
+        stateValid() {
+            return this.notEmpty(this.state);
+        },
+        zipCodeValid() {
+            return this.notEmpty(this.zipCode);
+        },
+        formValid() {
+            return this.zipCodeValid && this.stateValid && this.stateValid && this.cityValid && this.addressValid;
         }
     },
     data() {
@@ -97,6 +112,11 @@ export default {
                 id: item.id,
                 quantity: item.quantity
             }
+        },
+        notEmpty(field) {
+            if (field === '') return false;
+            if (!field) return null;
+            return true;
         }
     }
 }

@@ -6,10 +6,10 @@ export default {
     state: {
         items: [],
         shippingAddress: {
-            address: '',
-            city: '',
-            state: '',
-            zipCode: ''
+            address: null,
+            city: null,
+            state: null,
+            zipCode: null
         }
     },
     mutations: {
@@ -32,10 +32,10 @@ export default {
             state.shippingAddress.zipCode = value;
         },
         resetShippingAddress(state) {
-            state.shippingAddress.address = '';
-            state.shippingAddress.city = '';
-            state.shippingAddress.state = '';
-            state.shippingAddress.zipCode = '';
+            state.shippingAddress.address = null;
+            state.shippingAddress.city = null;
+            state.shippingAddress.state = null;
+            state.shippingAddress.zipCode = null;
         },
         resetItems(state) {
             state.items = [];
