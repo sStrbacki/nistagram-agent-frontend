@@ -21,8 +21,6 @@ export default {
            })
        },
        addToShoppingCart(context,item){
-           //TODO remove an username when jwt is configured
-           item = {...item, ...{ username: "johndoe" } }
            axios.post(api.shoppingCart.root, item)
            .then(() => {
                 Vue.notify({

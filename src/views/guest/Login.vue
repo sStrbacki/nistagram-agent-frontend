@@ -40,7 +40,7 @@ export default {
                 return this.$store.state.login.loginData.username;
             },
             set(value) {
-                this.$store.commit("updateUsername", value);
+                this.$store.commit("updateLoginUsername", value);
             }
         },
         password: {
@@ -48,7 +48,7 @@ export default {
                 return this.$store.state.login.loginData.password;
             },
             set(value) {
-                this.$store.commit("updatePassword", value);
+                this.$store.commit("updateLoginPassword", value);
             }
         },
         checkCredentials() {

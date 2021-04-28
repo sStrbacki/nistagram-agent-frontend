@@ -43,17 +43,15 @@ export default {
     },
     actions: {
         fetchShoppingCart(context) {
-            axios.get(api.shoppingCart.root + 'user/johndoe')
+            axios.get(api.shoppingCart.root)
             .then((response) => {
                 context.commit('setItems', response.data);
             })
         },
         placeOrder(context) {
             const invoiceRequest = {
-                username: 'johndoe',
                 shippingAddress: context.state.shippingAddress
             }
-            console.log(invoiceRequest)
             axios.post(api.invoices.root, invoiceRequest)
             .then(response => {
                 Vue.notify({
