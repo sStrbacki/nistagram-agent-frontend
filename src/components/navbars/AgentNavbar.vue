@@ -24,12 +24,14 @@
 </template>
 <script>
 import { clearJwt } from '../../helpers/jwt'
+import { clearRole } from '../../helpers/roles'
 
 export default {
     name: 'AgentNavbar',
     methods: {
         logOut(){
             clearJwt()
+            clearRole()
             this.$router.push({ name: 'Login' })
         }
     }

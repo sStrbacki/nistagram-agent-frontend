@@ -4,7 +4,8 @@ const api = {
     users: {
         root: baseUrl + 'api/user/',
         requestPasswordReset: baseUrl + 'api/user/' + 'request-password-reset/',
-        passwordReset: baseUrl + 'api/user/' + 'password-reset/'
+        passwordReset: baseUrl + 'api/user/' + 'password-reset/',
+        role: baseUrl + 'api/user/' + 'role/'
     },
     auth: {
         root: baseUrl + 'api/auth/',
