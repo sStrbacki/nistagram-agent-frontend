@@ -88,7 +88,7 @@ export default {
             return this.notEmpty(this.state);
         },
         zipCodeValid() {
-            return this.notEmpty(this.zipCode);
+            return this.notEmpty(this.zipCode) && /^\d+$/.test(this.zipCode);
         },
         formValid() {
             return this.zipCodeValid && this.stateValid && this.stateValid && this.cityValid && this.addressValid;
