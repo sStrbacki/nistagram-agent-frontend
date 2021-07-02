@@ -12,9 +12,9 @@
         </b-row>
         <div class="d-flex flex-wrap justify-content-between mt-3">
             <b-col cols="4" v-for="product in products" :key="product.id">
-                <div v-if="product.id !== editId" class="product m-1 py-1">
+                <div class="product m-1 py-1">
                     <b-row align-h="center">
-                        <img v-bind:src="product.imageUrl" class="product-image">
+                        <img v-bind:src="product.imageUrl" class="product-image" alt="Product image">
                     </b-row>
                     <b-row align-h="center">
                         {{product.name}}
@@ -26,39 +26,51 @@
                         {{product.quantity}}
                     </b-row>
                     <b-row align-h="end">
-                        <b-button size="sm" variant="primary" class="mx-2" @click="editId = product.id">Edit</b-button>
+                        <b-button size="sm" variant="primary" class="mx-2" v-b-modal:edit-product-modal @click="openEdit(product.id)">Edit</b-button>
                         <b-button size="sm" variant="danger" class="mr-4" @click="remove(product.id)">Delete</b-button>
                     </b-row>
                 </div>
-                <div v-else class="product m-1 p-1">
-                    <product-form
-                        :id="product.id"
-                        :name="product.name"
-                        :imageUrl="product.imageUrl"
-                        :price="product.price"
-                        :quantity="product.quantity"
-                        @cancel="editId = 0"
-                        @save="save"></product-form>
-                </div>
             </b-col>
         </div>
+        <div>
+          <b-modal v-if="editOpened" id="edit-product-modal"
+                   @cancel="closeEdit"
+                   @ok="saveEdit">
+            <product-info
+            :_name="editedProduct.name"
+            :_price="editedProduct.price"
+            :_quantity="editedProduct.quantity"
+            @name="editedProduct.name = $event"
+            @price="editedProduct.price = $event"
+            @quantity="editedProduct.quantity = $event"
+            >
+            </product-info>
+          </b-modal>
+        </div>
+
     </b-container>
 </template>
 
 <script>
 import ProductForm from '../../components/products/ProductForm';
+import ProductInfo from "@/components/products/ProductInfo";
 
 export default {
-    components: { ProductForm },
-    data() {
-        return {
-            editId: 0
-        }
-    },
+    components: {ProductInfo, ProductForm},
     computed: {
       products: {
         get() {
           return this.$store.getters.allProducts;
+        }
+      },
+      editOpened: {
+        get() {
+          return this.$store.getters.editOpened;
+        }
+      },
+      editedProduct: {
+        get() {
+          return this.$store.getters.editedProduct;
         }
       }
     },
@@ -66,16 +78,20 @@ export default {
         this.$store.dispatch('getAllProducts');
     },
     methods: {
-        save(form) {
-            const index = this.products.findIndex(p => p.id === form.id);
-            this.products[index] = form;
-            this.editId = 0;
+        saveEdit() {
+            this.$store.dispatch('saveEdit');
         },
         addProduct(product) {
             this.products.push(product);
         },
         remove(id) {
             this.$store.dispatch('deleteProductById', id);
+        },
+        openEdit(id) {
+          this.$store.dispatch('openEditDialog', id);
+        },
+        closeEdit() {
+          this.$store.dispatch('closeEditDialog');
         }
     }
 }

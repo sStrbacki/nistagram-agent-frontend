@@ -12,3 +12,7 @@ export async function getAllProducts() {
 export async function deleteProductById(id) {
     return axios.delete(api.products.root + '/' + id);
 }
+
+export async function updateProduct(id, product) {
+    return axios.put(api.products.root + '/' + id, product);
+}
