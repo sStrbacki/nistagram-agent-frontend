@@ -47,20 +47,23 @@
 
 <script>
 import ProductForm from '../../components/products/ProductForm';
-import axios from 'axios';
-import api from '../../api/index.js';
 
 export default {
     components: { ProductForm },
     data() {
         return {
-            products: [],
             editId: 0
         }
     },
+    computed: {
+      products: {
+        get() {
+          return this.$store.getters.allProducts;
+        }
+      }
+    },
     mounted() {
-        axios.get(api.products.root)
-        .then(response => this.products = response.data);
+        this.$store.dispatch('getAllProducts');
     },
     methods: {
         save(form) {
@@ -72,11 +75,7 @@ export default {
             this.products.push(product);
         },
         remove(id) {
-            axios.delete(api.products.root + id)
-            .then(() => {
-                const index = this.products.findIndex(p => p.id === id);
-                this.products.splice(index, 1);
-            })
+            this.$store.dispatch('deleteProductById', id);
         }
     }
 }
@@ -103,7 +102,7 @@ export default {
     width: 200px;
     height: 200px;
     border-radius: 90%;
-    object-fit: cover; 
+    object-fit: cover;
 }
 
 img {

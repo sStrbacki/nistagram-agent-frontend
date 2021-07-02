@@ -7,7 +7,7 @@
     </b-row>
     <b-row class="my-1">
         <b-col>
-            <b-form-input :state="priceValid" v-model="form.price" placeholder="Price"></b-form-input>
+            <b-form-input :state="priceValid" v-model="form.price" placeholder="Price" type="number"></b-form-input>
         </b-col>
     </b-row>
     <b-row class="my-1">
@@ -22,7 +22,7 @@
         <b-col cols="8">
             <input type="file" ref="image" accept="image/*" @change="uploadImage"/>
         </b-col>
-        
+
     </b-row>
     <b-row align-h="end" align-v="center" class="my-1">
         <b-spinner v-show="uploading"></b-spinner>
@@ -42,8 +42,11 @@ export default {
         id: Number,
         name: String,
         imageUrl: String,
-        price: Number,
+        price: String,
         quantity: Number
+    },
+    emits: {
+
     },
     data() {
         return {
