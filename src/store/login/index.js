@@ -46,16 +46,19 @@ export default {
     },
     actions: {
         async login(context){
-            const loginResponse =
-                await sendLoginRequest(context.getters.loginUsername, context.getters.loginPassword);
-            if (loginResponse.status === 200) {
+            try {
+                const loginResponse =
+                    await sendLoginRequest(context.getters.loginUsername, context.getters.loginPassword);
                 successMessage('Login successful.');
                 setJwt(loginResponse.headers.authorization);
                 await fetchRole();
                 await context.commit('setRole', getLocalRole());
                 context.dispatch('clearLoginData');
+                context.dispatch('postLoginReroute');
             }
-            else errorMessage(loginResponse.response.data)
+            catch (e) {
+                errorMessage(e.response.data);
+            }
         },
         async postLoginReroute() {
             const name = getLocalRole() === 'ROLE_USER' ? 'Catalog' : 'Products';

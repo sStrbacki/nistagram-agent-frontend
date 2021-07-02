@@ -57,10 +57,7 @@ export default {
   },
   methods: {
     login() {
-      this.$store.dispatch('login')
-        .then(() => {
-          this.$store.dispatch('postLoginReroute');
-        })
+      this.$store.dispatch('login');
     }
   }
 }
