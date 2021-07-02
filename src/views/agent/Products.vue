@@ -10,7 +10,6 @@
               :_name="newProduct.name"
               :_price="newProduct.price"
               :_quantity="newProduct.quantity"
-              :_image-url="newProduct.imageUrl"
               @create="addProduct"
               @name="updateNewProductField('name', $event)"
               @price="updateNewProductField('price', $event)"

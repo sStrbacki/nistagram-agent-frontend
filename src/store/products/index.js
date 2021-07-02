@@ -107,7 +107,6 @@ export default {
         updateNewProductField(state, payload) {
             const field = payload.field;
             state.products.newProduct[field] = payload.value;
-            console.log('New product updated:', state.products.newProduct);
         },
     }
 }
