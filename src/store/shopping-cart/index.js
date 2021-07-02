@@ -1,10 +1,14 @@
 import api from '../../api/index';
 import axios from 'axios';
-import Vue from 'vue';
+import {getCartItems, removeFromCart} from "@/services/cartService";
+import {errorMessage, successMessage} from "@/helpers/notfications";
+import {deleteById} from "@/services/general";
 
 export default {
     state: {
-        items: [],
+        cart: {
+            items: [],
+        },
         shippingAddress: {
             address: null,
             city: null,
@@ -12,12 +16,23 @@ export default {
             zipCode: null
         }
     },
-    mutations: {
-        setItems(state, value) {
-            state.items = value;
+    getters: {
+        shoppingCartItems(state) {
+            return state.cart.items;
         },
-        removeItem(state, itemId) {
-            state.items = state.items.filter(item => item.id !== itemId);
+        fullShippingAddress(state) {
+            return state.cart.shippingAddress;
+        }
+    },
+    mutations: {
+        setCartItems(state, value) {
+            state.cart.items = value;
+        },
+        removeCartItemById(state, itemId) {
+            deleteById(state.cart.items, itemId);
+        },
+        resetItems(state) {
+            state.cart.items = [];
         },
         updateAddress(state, value) {
             state.shippingAddress.address = value;
@@ -37,48 +52,33 @@ export default {
             state.shippingAddress.state = null;
             state.shippingAddress.zipCode = null;
         },
-        resetItems(state) {
-            state.items = [];
-        }
+
     },
     actions: {
         fetchShoppingCart(context) {
-            axios.get(api.shoppingCart.root)
+            getCartItems()
             .then((response) => {
-                context.commit('setItems', response.data);
+                context.commit('setCartItems', response.data);
             })
         },
         placeOrder(context) {
-            const invoiceRequest = {
-                shippingAddress: context.state.shippingAddress
-            }
-            axios.post(api.invoices.root, invoiceRequest)
-            .then(response => {
-                Vue.notify({
-                    group: 'notification',
-                    text: response.data,
-                    type: 'success'
-                });
+            axios.post(api.invoices.root, context.getters.fullShippingAddress)
+            .then(() => {
+                successMessage('Order placed')
                 context.commit('resetItems');
                 context.commit('resetShippingAddress');
             })
-            .catch(error => {
-                console.log(error.response.data);
-                Vue.notify({
-                    group: 'notification',
-                    text: error.response.data,
-                    type: 'error'
-                });
-            });
+            .catch(error => errorMessage(error.response.data));
         },
         removeFromShoppingCart(context, shoppingCartItemId) {
-            axios.delete(api.shoppingCart.root + shoppingCartItemId)
+            removeFromCart(shoppingCartItemId)
             .then(() => {
-                Vue.notify({
-                    group: 'notification',
-                    text: "Product successfully removed from your shopping cart!",
-                    type: 'success'
-                });
+                context.commit('removeCartItemById', shoppingCartItemId);
+                successMessage('Removed from cart.');
+            })
+            .catch(err => {
+                console.log(err);
+                errorMessage(err.response.data);
             });
         }
     }
