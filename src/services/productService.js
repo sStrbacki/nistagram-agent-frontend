@@ -1,10 +1,6 @@
 import axios from "axios";
 import api from "@/api";
 
-/**
- * [ADMIN-ONLY] Returns all the products in the database.
- * @return {Promise<AxiosResponse<any>>}
- */
 export async function getAllProducts() {
     return axios.get(api.products.root);
 }
@@ -15,4 +11,8 @@ export async function deleteProductById(id) {
 
 export async function updateProduct(id, product) {
     return axios.put(api.products.root + '/' + id, product);
+}
+
+export async function createNewProduct(product) {
+    return axios.post(api.products.root, product);
 }

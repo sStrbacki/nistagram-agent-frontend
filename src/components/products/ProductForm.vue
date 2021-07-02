@@ -1,6 +1,10 @@
 <template>
-<div>
-    <ProductInfo></ProductInfo>
+  <div>
+    <ProductInfo :_name="name" :_price="price" :_quantity="quantity"
+      @name="emit('name', $event)"
+                 @price="emit('price', $event)"
+                 @quantity="emit('quantity', $event)"
+    ></ProductInfo>
     <b-row class="my-1">
       <b-col cols="4">
         Upload image:
@@ -10,10 +14,9 @@
       </b-col>
     </b-row>
     <b-row align-h="end" align-v="center" class="my-1">
-        <b-button variant="primary" class="mx-2" @click="save()">Save</b-button>
-        <b-button class="mr-3" @click="cancel()">Cancel</b-button>
+      <b-button variant="primary" class="mx-2" @click="create()">Save</b-button>
     </b-row>
-</div>
+  </div>
 </template>
 
 <script>
@@ -27,67 +30,52 @@ export default {
   name: 'ProductForm',
   components: {ProductInfo},
   props: {
-        id: Number,
-        name: String,
-        imageUrl: String,
-        price: Number,
-        quantity: Number
+    _name: {},
+    _imageUrl: {},
+    _price: {},
+    _quantity: {}
+  },
+  computed: {
+    name() {
+      return this._name;
     },
-    data() {
-        return {
-            form: {
-                id: this.id,
-                name: this.name,
-                imageUrl: this.imageUrl,
-                price: this.price,
-                quantity: this.quantity
-            },
-            uploading: false
-        }
+    price() {
+      return this._price;
     },
-    methods: {
-        save() {
-            if (!this.form.id) this.create();
-            else this.update();
-        },
-        create() {
-            axios.post(api.products.root, this.form)
-            .then(response => {
-              console.log(response.data);
-              this.$emit('save', this.form);
-            });
-        },
-        update() {
-            axios.put(api.products.root + this.form.id, this.form)
-            .then(() => this.$emit('save', this.form));
-        },
-        cancel() {
-            this.reset();
-            this.$emit('cancel');
-        },
-        reset() {
-            this.form = {
-                id: this.id,
-                name: this.name,
-                imageUrl: this.imageUrl,
-                price: this.price,
-                quantity: this.quantity
+    quantity() {
+      return this._quantity;
+    },
+    imageUrl: {
+      get() {
+        return this._imageUrl;
+      },
+      set(value) {
+        this.$emit('imageUrl', value);
+      }
+    },
+  },
+  methods: {
+    create() {
+      this.$emit('create');
+    },
+    emit(code, value) {
+      this.$emit(code, value);
+    },
+    // TODO Move this to it's own component!
+    uploadImage() {
+      const formData = createImageFormData(this.$refs.image.files[0]);
+      axios.post(
+          api.images.root,
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data'
             }
-        },
-        uploadImage() {
-          const formData = createImageFormData(this.$refs.image.files[0]);
-          axios.post(
-              api.images.root,
-              formData,
-              {
-                headers: {
-                  'Content-Type': 'multipart/form-data'
-                }
-              })
-          .then(response => this.form.imageUrl = api.images.content + '/' + response.data)
-          .catch(() => errorMessage('Error while uploading the image.'))
-        }
-    },
+          })
+      .then(response => this.imageUrl = api.images.content + '/' + response.data)
+      .catch(() => errorMessage('Error while uploading the image.'))
+    }
+  },
 
 }
 </script>
