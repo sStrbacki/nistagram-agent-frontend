@@ -1,11 +1,11 @@
-function setRole(role){
+function setLocalRole(role){
     localStorage.setItem('role', role)
 }
-function getRole(){
+function getLocalRole(){
     return localStorage.getItem('role')
 }
-function clearRole(){
+function clearLocalRole(){
     localStorage.removeItem('role')
 }
 
-export { setRole, getRole, clearRole }
+export { setLocalRole, getLocalRole, clearLocalRole }

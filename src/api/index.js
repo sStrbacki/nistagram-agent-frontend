@@ -1,4 +1,4 @@
-const baseUrl = 'https://localhost:4000/'
+const baseUrl = 'http://localhost:4000/'
 
 const api = {
     users: {

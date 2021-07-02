@@ -1,58 +1,69 @@
 import axios from "axios";
-import router from '../../router/index'
 import api from '../../api/index'
-import Vue from "vue";
 
-import { setJwt } from "../../helpers/jwt"
-import { setRole, getRole } from "../../helpers/roles"
+import {setJwt} from "@/helpers/jwt"
+import {setLocalRole, getLocalRole} from "@/helpers/roles"
+import {sendLoginRequest} from "@/services/loginService";
+import {errorMessage, successMessage} from "@/helpers/notfications";
+import router from "@/router";
 
 async function fetchRole(){
     const res = await axios.get(api.users.role);
-    setRole(res.data);
+    setLocalRole(res.data);
 }
-function reroute(){
-    if(getRole() === "ROLE_USER")
-        router.push({ name: 'Catalog' })
-    else if(getRole() === "ROLE_ADMIN")
-        router.push({ name: 'Products' })
 
-}
 export default {
     state: {
-        loginData:{
+        login: {
             username: '',
             password: '',
+        },
+        role: {
+            role: ''
         }
     },
     mutations: {
-        updateLoginUsername(state, value){
-            state.loginData.username = value
+        setLoginUsername(state, value){
+            state.login.username = value
         },
-        updateLoginPassword(state, value){
-            state.loginData.password = value
+        setLoginPassword(state, value){
+            state.login.password = value
         },
-        clearLoginData(state){
-            state.loginData.username = ""
-            state.loginData.password = ""
+        setRole(state, value) {
+            state.role.role = value;
+        }
+    },
+    getters: {
+        role(state) {
+          return state.role.role;
+        },
+        loginUsername(state) {
+            return state.login.username;
+        },
+        loginPassword(state) {
+            return state.login.password;
         }
     },
     actions: {
-        login(context){
-            axios.post(api.auth.login, context.state.loginData)
-            .then(response => {
-                setJwt(response.headers.authorization)
-                fetchRole().then(()=>{
-                    reroute()
-                    context.commit('clearLoginData')
-                })
-            })
-            .catch(err => {
-                Vue.notify({
-                    group: 'notification',
-                    text: err.response.data,
-                    type: 'error'
-                })
-            });
+        async login(context){
+            const loginResponse =
+                await sendLoginRequest(context.getters.loginUsername, context.getters.loginPassword);
+            if (loginResponse.status === 200) {
+                successMessage('Login successful.');
+                setJwt(loginResponse.headers.authorization);
+                await fetchRole();
+                await context.commit('setRole', getLocalRole());
+                context.dispatch('clearLoginData');
+            }
+            else errorMessage(loginResponse.response.data)
+        },
+        async postLoginReroute() {
+            const name = getLocalRole() === 'ROLE_USER' ? 'Catalog' : 'Products';
+            await router.push({name});
+        },
+        async clearLoginData(context) {
+            context.commit('setLoginUsername', '');
+            context.commit('setLoginPassword', '');
         }
     }
 }

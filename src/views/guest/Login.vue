@@ -2,7 +2,7 @@
   <b-container>
     <b-row cols="2" align-h="center">
 
-      <div class="reg-form" >
+      <div class="reg-form">
         <b-row align-h="center" class="mb-4">
           <h1>Welcome back</h1>
         </b-row>
@@ -16,14 +16,14 @@
         </b-row>
 
         <b-row cols="1" align-h="center" class="mt-4">
-          <b-button @click="login" :disabled="!checkCredentials"> Login </b-button>
+          <b-button @click="login" :disabled="!checkCredentials"> Login</b-button>
         </b-row>
 
         <b-row align-h="end" class="mt-3">
           <b-link :to="{ name: 'ForgotPassword' }">Forgot password?</b-link>
         </b-row>
         <b-row align-h="end" class="mt-3">
-          <b-link :to="{ name: 'SignUp'}"> Create an account </b-link>
+          <b-link :to="{ name: 'SignUp'}"> Create an account</b-link>
         </b-row>
 
       </div>
@@ -33,38 +33,41 @@
 
 <script>
 export default {
-    name: "Login",
-    computed: {
-        username: {
-            get() {
-                return this.$store.state.login.loginData.username;
-            },
-            set(value) {
-                this.$store.commit("updateLoginUsername", value);
-            }
-        },
-        password: {
-            get() {
-                return this.$store.state.login.loginData.password;
-            },
-            set(value) {
-                this.$store.commit("updateLoginPassword", value);
-            }
-        },
-        checkCredentials() {
-            return this.username && this.password;
-        }
+  name: "Login",
+  computed: {
+    username: {
+      get() {
+        return this.$store.getters.loginUsername;
+      },
+      set(value) {
+        this.$store.commit("setLoginUsername", value);
+      }
     },
-    methods: {
-        login() {
-            this.$store.dispatch('login')
-        }
+    password: {
+      get() {
+        return this.$store.getters.loginPassword;
+      },
+      set(value) {
+        this.$store.commit("setLoginPassword", value);
+      }
+    },
+    checkCredentials() {
+      return this.username && this.password;
     }
+  },
+  methods: {
+    login() {
+      this.$store.dispatch('login')
+        .then(() => {
+          this.$store.dispatch('postLoginReroute');
+        })
+    }
+  }
 }
 </script>
 
 <style scoped>
-.reg-form{
+.reg-form {
   margin-top: 5em;
   color: rgb(36, 35, 35);
   background-color: rgb(224, 220, 220);
@@ -72,16 +75,21 @@ export default {
   border-radius: 6px;
   box-shadow: 5px 5px 10px #1d1d1d;
 }
+
 .notif-text {
   margin-top: 0.3em;
 }
+
 .sub-notif-text {
   margin-left: 2.5em;
 }
+
 .fade-enter-active, .fade-leave-active {
   transition: opacity .5s;
 }
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */
+{
   opacity: 0;
 }
 </style>

@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import { getRole } from '../helpers/roles'
+import { getLocalRole } from '../helpers/roles'
 
 Vue.use(VueRouter)
 
@@ -71,54 +71,47 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-	const role = getRole()
+	const role = getLocalRole();
 
-	if(to.matched.some( record => record.meta.unauthorized )){
-		if(role !== null){
-			switch(role){
+	if(to.matched.some( record => record.meta.unauthorized )) {
+		if(role) {
+			switch(role) {
 				case 'ROLE_ADMIN':
-					next({ name: 'Products'})
+					next({ name: 'Products'});
 					break;
 				case 'ROLE_USER':
-					next({ name: 'Catalog'})
-					break;
+					next({ name: 'Catalog'});
 			}
 		}
 		else next();
 	}
 
-	else if(to.matched.some(record => record.meta.requiresUserAuth)){
-		switch(role){
-			case 'ROLE_ADMIN':
-				next({ name: 'Products'})
-				break;
-			case null:
-				next({ name: 'Login' })
-				break;
-			case 'ROLE_USER':
-				next()
-				break;
-
+	else if(to.matched.some(record => record.meta.requiresUserAuth)) {
+		if (role) {
+			switch (role) {
+				case 'ROLE_ADMIN':
+					next({name: 'Products'});
+					break;
+				case 'ROLE_USER':
+					next();
+			}
 		}
+		else next({ name: 'Login' })
 	}
 
-	else if(to.matched.some(record => record.meta.requiresAdminAuth)){
-		switch(role){
+	else if(to.matched.some(record => record.meta.requiresAdminAuth)) {
+		switch(role) {
 			case 'ROLE_USER':
-				next({ name: 'Catalog'})
+				next({ name: 'Catalog'});
 				break;
 			case null:
-				next({ name: 'Login' })
+				next({ name: 'Login' });
 				break;
 			case 'ROLE_ADMIN':
-				next()
-				break;
-
+				next();
 		}
 	}
-	else next()
-	
-
+	else next();
 })
 
-export default router
+export default router;
