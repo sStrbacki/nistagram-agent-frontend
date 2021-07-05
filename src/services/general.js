@@ -10,3 +10,10 @@ export function deleteById(array, id) {
     const index = array.findIndex(element => element.id === id);
     array.splice(index, 1);
 }
+
+export function stringMatchesRegex(word, regex) {
+    const matched = word.match(regex);
+    if (matched === null)
+        return false;
+    return matched['0'].length === word.length;
+}

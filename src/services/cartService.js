@@ -21,3 +21,7 @@ export async function removeFromCart(cartItemId) {
 export async function placeOrder(address) {
     return axios.post(api.invoices.root, address)
 }
+
+export async function checkout(deliveryAddress) {
+    return axios.post(api.shoppingCart.checkout, deliveryAddress);
+}

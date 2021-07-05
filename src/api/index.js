@@ -20,7 +20,8 @@ const api = {
         root: baseUrl + '/api/images'
     },
     shoppingCart: {
-        root: baseUrl + '/api/shopping-cart'
+        root: baseUrl + '/api/shopping-cart',
+        checkout: baseUrl + '/api/shopping-cart/checkout'
     },
     invoices: {
         root: baseUrl + '/api/invoice'

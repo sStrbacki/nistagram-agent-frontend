@@ -42,6 +42,9 @@ export default {
       return this._quantity;
     },
     imageUrl: {
+      get() {
+        return undefined;
+      },
       set(value) {
         console.log('Setter called. Emitting value:', value);
         this.$emit('imageUrl', value);

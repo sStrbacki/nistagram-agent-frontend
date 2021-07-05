@@ -9,12 +9,20 @@
         </div>
       </b-col>
     </div>
+    <div>
+      <b-row>
+        <b-col>
+          <b-button class="btn-success" @click="checkout">Checkout</b-button>
+        </b-col>
+      </b-row>
+    </div>
   </div>
 </template>
 
 <script>
 import CatalogItem from '../../components/catalog/CatalogItem'
 import {deepCopy} from "@/services/general";
+import {errorMessage} from "@/helpers/notfications";
 
 export default {
   name: 'ShoppingCart',
@@ -30,6 +38,12 @@ export default {
     this.$store.dispatch('fetchShoppingCart');
   },
   methods: {
+    checkout() {
+      if (this.$store.getters.cartItems.length === 0)
+        errorMessage('Your cart is empty.');
+      else
+        this.$router.push({name: 'Checkout'});
+    },
     trimProduct(item) {
       const cartItem = deepCopy(item);
       cartItem.product = undefined;
