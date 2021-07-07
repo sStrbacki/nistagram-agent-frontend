@@ -1,5 +1,6 @@
 import {findByCustomFieldValue} from "@/services/general";
-import {successMessage} from "@/helpers/notfications";
+import {errorMessage, successMessage} from "@/helpers/notfications";
+import {deployLongTerm, deployOneTerm} from "@/services/campaignService";
 
 export default {
     state: {
@@ -28,6 +29,11 @@ export default {
         },
         createCampaign(context) {
             const form = context.getters.campaignForm;
+            const sameNameCampaign = findByCustomFieldValue(context.getters.allCampaigns, 'name', form.name);
+            if (sameNameCampaign) {
+                errorMessage('Campaign with the name ' + form.name + ' already exists');
+                return;
+            }
             const campaign = {
                 name: form.name,
                 type: form.type,
@@ -65,6 +71,15 @@ export default {
             context.getters.selectedCampaign.advertisements.push(ad);
             successMessage(context.getters.promotedProduct.name + ' added to campaign ' + context.getters.selectedCampaign.name);
             context.commit('resetStateVariables');
+        },
+        async deployCampaign(context, campaign) {
+            const func = campaign.exposureMoments ? deployLongTerm : deployOneTerm;
+            func(campaign)
+            .then(() => {
+              context.commit('removeCampaignByName', campaign.name);
+              successMessage('Success');
+            })
+            .catch(error => console.error(error.response.data));
         }
     },
     getters: {
@@ -117,6 +132,10 @@ export default {
         },
         adCaption(state, value) {
             state.campaign.adCaption = value;
+        },
+        /** Logic */
+        removeCampaignByName(state, campaignName) {
+          state.campaign.campaigns.remove(campaign => campaign.name === campaignName);
         },
         resetForm(state) {
             state.campaign.campaignForm = {

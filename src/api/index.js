@@ -25,6 +25,11 @@ const api = {
     },
     invoices: {
         root: baseUrl + '/api/invoice'
+    },
+    campaign: {
+        root: baseUrl + '/api/campaign',
+        oneTerm: baseUrl + '/api/campaign/one-term',
+        longTerm: baseUrl + '/api/campaign/long-term'
     }
 }
 

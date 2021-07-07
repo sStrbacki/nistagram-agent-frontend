@@ -41,7 +41,7 @@
                 </b-button>
               </div>
               <div v-else>
-                <p>Campaign duration: One time</p>
+                <p>Campaign duration: One term</p>
                 <p>Exposure date: {{campaign.exposureMoment}}</p>
               </div>
             </b-col>
@@ -49,8 +49,8 @@
 
           <b-row class="mt-3">
             <b-col>
-              <b-button variant="outline-danger">Targeted audience</b-button>
-              <br><br>
+              <b-button variant="danger">Targeted audience</b-button>
+              <div class="mt-2"></div>
               <p>
                 Minimum viewer age: {{campaign.targetedGroup.minAge}}
               </p>
@@ -65,7 +65,7 @@
 
           <b-row class="text-center">
             <b-col>
-              <b-button variant="success">Deploy</b-button>
+              <b-button variant="success" @click="deploy(campaign)">Deploy</b-button>
             </b-col>
           </b-row>
         </div>
@@ -84,6 +84,11 @@ export default {
         console.log('Campaigns overview:', campaigns);
         return campaigns;
       }
+    }
+  },
+  methods: {
+    deploy(campaign) {
+      this.$store.dispatch('deployCampaign', campaign);
     }
   }
 }
