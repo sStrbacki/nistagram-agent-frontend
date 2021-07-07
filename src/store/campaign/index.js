@@ -24,7 +24,25 @@ export default {
                 findByCustomFieldValue(context.getters.allCampaigns, 'name', campaignName));
         },
         createCampaign(context) {
-            alert(context.getters.campaignForm.startsOn);
+            const form = context.getters.campaignForm;
+            const campaign = {
+                name: form.name,
+                type: form.type,
+                targetedGroup: form.targetedGroup,
+            };
+            if (form.longevity === 'ONE-TERM')
+                campaign['exposureMoment'] = form.exposureMoment;
+            else if (form.longevity === 'LONG-TERM') {
+                campaign['startsOn'] = form.startsOn;
+                campaign['endsOn'] = form.endsOn;
+                campaign['exposureMoments'] = [];
+                form.exposureMomentsBatch.split(' ')
+                    .forEach(token => {
+                        campaign['exposureMoments'].push(token + ':00:00');
+                    })
+            }
+
+            context.commit('addCampaign', campaign);
             context.commit('resetForm');
         }
     },
@@ -51,6 +69,9 @@ export default {
         campaignForm(state, value) {
             state.campaign.campaignForm = value;
         },
+        addCampaign(state, value) {
+            state.campaign.campaigns.push(value);
+        },
         resetForm(state) {
             state.campaign.campaignForm = {
                 longevity: 'ONE-TERM',
@@ -62,10 +83,14 @@ export default {
                     gender: undefined
                 },
                 advertisements: [],
+
+                /** One-term field */
+                exposureMoment: undefined,
+
+                /** Long term fields */
                 exposureMoments: [],
                 startsOn: undefined,
                 endsOn: undefined,
-                exposureMoment: undefined,
                 exposureMomentsBatch: undefined
             }
         }

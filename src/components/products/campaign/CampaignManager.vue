@@ -4,15 +4,17 @@
     <div v-if="campaignsExist">
       <b-row>
         <b-col>
-          <p> Select a campaign </p>
+          <label> Select a campaign </label>
         </b-col>
       </b-row>
       <b-row>
-        <b-select v-model="selectedCampaign.name">
-          <b-select-option v-for="campaign in allCampaigns" :key="campaign.name" :value="campaign.name">
-            {{campaign.name}}
-          </b-select-option>
-        </b-select>
+        <b-col>
+          <b-select v-model="selectedCampaign.name">
+            <b-select-option v-for="campaign in allCampaigns" :key="campaign.name" :value="campaign.name">
+              {{campaign.name}}
+            </b-select-option>
+          </b-select>
+        </b-col>
       </b-row>
     </div>
 
