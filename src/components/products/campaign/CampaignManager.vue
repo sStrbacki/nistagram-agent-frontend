@@ -141,6 +141,12 @@
               <b-input type="date" placeholder="Date" v-model="form.exposureMoment"></b-input>
             </label>
           </b-col>
+          <b-col>
+            <label>
+              Exposure time
+              <b-input type="time" :disabled="form.exposureMoment === undefined" placeholder="Time" @change="setExposureMomentTime(form, $event)"></b-input>
+            </label>
+          </b-col>
         </b-row>
       </div>
       <div v-else class="mt-2">
@@ -242,6 +248,16 @@ export default {
     },
     addProductToCampaign() {
       this.$store.dispatch('addProductToCampaign');
+    },
+    setExposureMomentTime(form, time) {
+      console.log('Exposure time:', time);
+      console.log('Exposure moment:', form.exposureMoment);
+      if (form.exposureMoment.includes('T')) {
+        form.exposureMoment = form.exposureMoment.split('T')[0] + 'T' + time + ':00';
+      }
+      else
+        form.exposureMoment += 'T' + time + ':00';
+      console.log('New exposure moment:', form.exposureMoment);
     }
   }
 }

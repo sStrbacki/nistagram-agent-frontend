@@ -135,7 +135,10 @@ export default {
         },
         /** Logic */
         removeCampaignByName(state, campaignName) {
-          state.campaign.campaigns.remove(campaign => campaign.name === campaignName);
+          state.campaign.campaigns.splice(
+              state.campaign.campaigns.findIndex(campaign => campaign.name === campaignName),
+              1
+          );
         },
         resetForm(state) {
             state.campaign.campaignForm = {
