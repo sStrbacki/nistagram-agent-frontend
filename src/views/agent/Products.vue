@@ -35,10 +35,12 @@
           <b-row align-h="center">
             {{ product.quantity }}
           </b-row>
-          <b-row align-h="end">
+          <b-row align-h="end" class="mt-3">
+            <b-button size="sm" variant="success" v-b-modal:promote-product-modal @click="openPromotion(product)">Promote</b-button>
+
             <b-button size="sm" variant="primary" class="mx-2" v-b-modal:edit-product-modal
-                      @click="openEdit(product.id)">Edit
-            </b-button>
+                      @click="openEdit(product.id)">Edit</b-button>
+
             <b-button size="sm" variant="danger" class="mr-4" @click="remove(product.id)">Delete</b-button>
           </b-row>
         </div>
@@ -58,6 +60,10 @@
         >
         </product-info>
       </b-modal>
+
+      <b-modal v-if="campaignOpened" id="promote-product-modal" ok-only ok-title="Cancel" ok-variant="secondary">
+        <CampaignManager></CampaignManager>
+      </b-modal>
     </div>
 
   </b-container>
@@ -66,9 +72,10 @@
 <script>
 import ProductForm from '../../components/products/ProductForm';
 import ProductInfo from "@/components/products/ProductInfo";
+import CampaignManager from "@/components/products/campaign/CampaignManager";
 
 export default {
-  components: {ProductInfo, ProductForm},
+  components: {CampaignManager, ProductInfo, ProductForm},
   computed: {
     products: {
       get() {
@@ -78,6 +85,11 @@ export default {
     editOpened: {
       get() {
         return this.$store.getters.editOpened;
+      }
+    },
+    campaignOpened: {
+      get() {
+        return this.$store.getters.campaignModalOpened;
       }
     },
     editedProduct: {
@@ -112,6 +124,9 @@ export default {
     },
     updateNewProductField(field, value) {
       this.$store.commit('updateNewProductField', {field, value});
+    },
+    openPromotion(product) {
+      this.$store.dispatch('openPromotion', product);
     }
   }
 }

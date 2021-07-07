@@ -6,14 +6,17 @@ export default {
     state: {
         products: {
             products: [],
-            editOpened: false,
-            editedProduct: undefined,
+            edit: {
+                editOpened: false,
+                editedProduct: undefined
+            },
+
             newProduct: {
                 name: undefined,
                 price: undefined,
                 quantity: undefined,
                 imageUrl: undefined
-            }
+            },
         }
     },
     getters: {
@@ -28,7 +31,7 @@ export default {
         },
         newProduct(state) {
             return state.products.newProduct;
-        }
+        },
     },
     actions: {
         async getAllProducts(context) {
@@ -75,7 +78,6 @@ export default {
             .catch(err => errorMessage(err.response.data));
         },
         async createNewProduct(context) {
-            console.log('Sending new product:', context.getters.newProduct);
             createNewProduct(context.getters.newProduct)
             .then(response => {
                 context.commit('addNewProduct', response.data);
@@ -89,7 +91,7 @@ export default {
             context.commit('updateNewProductField', {field:'price', value: undefined});
             context.commit('updateNewProductField', {field:'quantity', value: undefined});
             context.commit('updateNewProductField', {field:'imageUrl', value: ''});
-        }
+        },
     },
     mutations: {
         allProducts(state, value) {
@@ -105,8 +107,7 @@ export default {
             state.products.products.push(value);
         },
         updateNewProductField(state, payload) {
-            const field = payload.field;
-            state.products.newProduct[field] = payload.value;
+            state.products.newProduct[payload.field] = payload.value;
         },
     }
 }

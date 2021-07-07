@@ -6,6 +6,7 @@ import passwordReset from './password-reset/index'
 import catalog from './catalog/index'
 import shoppingCart from './shopping-cart/index'
 import products from './products/index'
+import campaign from './campaign/index'
 
 Vue.use(Vuex)
 
@@ -16,6 +17,7 @@ export default new Vuex.Store({
     passwordReset,
     catalog,
     shoppingCart,
-    products
+    products,
+    campaign
   }
 })

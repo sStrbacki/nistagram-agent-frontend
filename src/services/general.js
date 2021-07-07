@@ -6,6 +6,10 @@ export function findById(array, id) {
     return array.find(element => element.id === id);
 }
 
+export function findByCustomFieldValue(array, fieldName, value) {
+    return array.find(element => element[fieldName] === value);
+}
+
 export function deleteById(array, id) {
     const index = array.findIndex(element => element.id === id);
     array.splice(index, 1);
