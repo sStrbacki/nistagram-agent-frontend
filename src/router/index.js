@@ -65,6 +65,11 @@ const routes = [
 			name: 'Products',
 			component: () => import('../views/agent/Products.vue')
 		},
+		{
+			path: 'campaigns',
+			name: 'Campaigns',
+			component: () => import('../components/products/campaign/CampaignsOverview')
+		}
 	]
   }
 ]
