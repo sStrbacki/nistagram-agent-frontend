@@ -24,10 +24,10 @@ export default {
             return state.products.products;
         },
         editOpened(state) {
-            return state.products.editOpened;
+            return state.products.edit.editOpened;
         },
         editedProduct(state) {
-            return state.products.editedProduct;
+            return state.products.edit.editedProduct;
         },
         newProduct(state) {
             return state.products.newProduct;
@@ -53,7 +53,7 @@ export default {
                 .catch(err => errorMessage(err.response.data));
             }
         },
-        async openEditDialog(context, id) {
+        openEditDialog(context, id) {
             const product = context.getters.allProducts.find(product => product.id === id);
             if (!product)
                 errorMessage('Edit failed. No product found with id=' + id);
@@ -98,10 +98,10 @@ export default {
             state.products.products = value;
         },
         editOpened(state, bool) {
-            state.products.editOpened = bool;
+            state.products.edit.editOpened = bool;
         },
         editedProject(state, value) {
-            state.products.editedProduct = value;
+            state.products.edit.editedProduct = value;
         },
         addNewProduct(state, value) {
             state.products.products.push(value);
