@@ -1,6 +1,6 @@
 import {findByCustomFieldValue} from "@/services/general";
 import {errorMessage, successMessage} from "@/helpers/notfications";
-import {deployLongTerm, deployOneTerm} from "@/services/campaignService";
+import {deployLongTerm, deployOneTerm, getExistingCampaigns} from "@/services/campaignService";
 
 export default {
     state: {
@@ -8,6 +8,7 @@ export default {
             campaigns: [
                 // {name: 'Sex campaign'}, {name: 'NGMI Campaign'}
             ],
+            existingCampaigns: [],
             selectedCampaign: undefined,
             campaignModalOpened: false,
             promotedProduct: undefined,
@@ -80,6 +81,11 @@ export default {
               successMessage('Success');
             })
             .catch(error => console.error(error.response.data));
+        },
+        async loadExistingCampaigns(context) {
+            getExistingCampaigns()
+            .then(response => context.commit('existingCampaigns', response.data))
+            .catch(error => console.error(error.response.data));
         }
     },
     getters: {
@@ -89,6 +95,7 @@ export default {
         selectedCampaign: state => state.campaign.selectedCampaign,
         campaignForm: state => state.campaign.campaignForm,
         adCaption: state => state.campaign.adCaption,
+        existingCampaigns: state => state.campaign.existingCampaigns,
 
         additionalCampaignRequested: state => state.campaign.additionalCampaignRequested,
 
@@ -133,6 +140,10 @@ export default {
         adCaption(state, value) {
             state.campaign.adCaption = value;
         },
+        existingCampaigns(state, value) {
+            state.campaign.existingCampaigns = value
+        },
+
         /** Logic */
         removeCampaignByName(state, campaignName) {
           state.campaign.campaigns.splice(

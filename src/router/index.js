@@ -66,9 +66,14 @@ const routes = [
 			component: () => import('../views/agent/Products.vue')
 		},
 		{
+			path: 'deploy',
+			name: 'DeployCampaigns',
+			component: () => import('../components/products/campaign/CampaignsDeployment')
+		},
+		{
 			path: 'campaigns',
-			name: 'Campaigns',
-			component: () => import('../components/products/campaign/CampaignsOverview')
+			name: 'ExistingCampaigns',
+			component: () => import('../components/products/campaign/ExistingCampaigns')
 		}
 	]
   }

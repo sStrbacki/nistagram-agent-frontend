@@ -16,7 +16,8 @@
               Username placeholder
             </template>
             <b-dropdown-item @click="logOut"> Sign Out</b-dropdown-item>
-            <b-dropdown-item @click="openCampaigns">Campaigns</b-dropdown-item>
+            <b-dropdown-item @click="deployCampaigns">Deploy campaigns</b-dropdown-item>
+            <b-dropdown-item @click="existingCampaigns">Existing campaigns</b-dropdown-item>
           </b-nav-item-dropdown>
         </b-navbar-nav>
       </b-collapse>
@@ -35,8 +36,11 @@ export default {
       clearLocalRole()
       this.$router.push({name: 'Login'})
     },
-    openCampaigns() {
-      this.$router.push({name: 'Campaigns'})
+    deployCampaigns() {
+      this.$router.push({name: 'DeployCampaigns'})
+    },
+    existingCampaigns() {
+      this.$router.push({name: 'ExistingCampaigns'})
     }
   }
 }
